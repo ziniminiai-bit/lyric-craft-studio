@@ -1,1 +1,58 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>Lyric Craft Studio - ZiniMini AI</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f0f0f; color: white; text-align: center; padding: 20px; }
+        .box { max-width: 600px; margin: auto; background: #1a1a1a; padding: 30px; border-radius: 20px; border: 1px solid #00d4ff; box-shadow: 0 0 15px rgba(0,212,255,0.3); }
+        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: none; background: #2a2a2a; color: white; font-size: 16px; box-sizing: border-box; }
+        button { background: #00d4ff; color: #000; border: none; padding: 15px 30px; border-radius: 10px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
+        #res { display: none; margin-top: 20px; background: #222; padding: 15px; border-radius: 10px; text-align: left; direction: ltr; font-family: monospace; font-size: 12px; overflow-x: auto; border: 1px dashed #555; white-space: pre-wrap; color: #00ff00; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2 style="color:#00d4ff">Lyric Craft Studio</h2>
+        <p>מערכת הפקת קוד הטמעה לבלוג</p>
+        <input type="text" id="sid" placeholder="הדבק כאן את ה-ID (למשל: 157964d0-af08-4df3-8e98-2f9f4075d024)">
+        <input type="text" id="sty" placeholder="סגנון מוזיקלי">
+        <textarea id="lyr" rows="5" placeholder="מילות השיר או מבנה השיר"></textarea>
+        <button onclick="gen()">צור קוד לבלוג</button>
+        <div id="res"></div>
+        <button id="copyBtn" style="display:none; background:#32CD32" onclick="copy()">העתק קוד</button>
+    </div>
 
+    <script>
+        function gen() {
+            const id = document.getElementById('sid').value.trim();
+            const sty = document.getElementById('sty').value.trim();
+            const lyr = document.getElementById('lyr').value.trim();
+            if(!id) return alert("נא להזין ID");
+            
+            const code = `<div style="direction: rtl; font-family: Arial, sans-serif; border: 2px solid #222; border-radius: 15px; overflow: hidden; max-width: 550px; margin: 20px auto; background: #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.2);">
+    <div style="background: #111; color: #00d4ff; padding: 12px; font-weight: bold; text-align: center;">ZiniMini Music</div>
+    <div style="padding: 15px; background: #f0f0f0;">
+        <iframe src="https://suno.com/embed/\${id}" width="100%" height="150" style="border:none; border-radius: 10px; background: white;" allowfullscreen></iframe>
+    </div>
+    <div style="padding: 15px;">
+        <div style="font-size: 11px; color: #888; font-weight: bold;">STYLE:</div>
+        <div style="background: #1e1e1e; color: #32CD32; padding: 10px; border-radius: 5px; font-family: monospace; direction: ltr; text-align: left;">\${sty}</div>
+    </div>
+    <div style="padding: 15px; background: #fafafa; border-top: 1px solid #eee;">
+        <div style="font-size: 11px; color: #888; font-weight: bold;">LYRICS:</div>
+        <div style="font-size: 16px; line-height: 1.6; color: #333; white-space: pre-wrap;">\${lyr}</div>
+    </div>
+    <div style="padding: 5px; background: #f1f1f1; text-align: center; font-size: 10px; color: #bbb;">prompts-il.blogspot.com</div>
+</div>`;
+            document.getElementById('res').innerText = code;
+            document.getElementById('res').style.display = 'block';
+            document.getElementById('copyBtn').style.display = 'block';
+        }
+        function copy() {
+            const text = document.getElementById('res').innerText;
+            navigator.clipboard.writeText(text).then(() => alert("הקוד הועתק!"));
+        }
+    </script>
+</body>
+</html>
