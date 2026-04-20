@@ -53,17 +53,17 @@
             var txtInputs = document.getElementsByClassName('btnTxt');
             var lnkInputs = document.getElementsByClassName('btnLnk');
             
+            // בניית שורת המונה והכפתורים
             var linksHtml = '\n    <div style="padding: 15px; text-align: center; background: #f9f9f9; border-top: 1px solid #eee; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 15px;">';
             
-            // מונה כניסות פנימי ויציב
-            linksHtml += '\n        <div style="font-size: 13px; color: #333; font-weight: bold; background: #e0e0e0; padding: 6px 12px; border-radius: 8px; border: 1px solid #ccc;">👀 צפיות: <span id="count_' + id + '">0</span></div>';
+            // מונה טקסטואלי חכם שלא נשבר לעולם
+            linksHtml += '\n        <div style="font-size: 13px; color: #333; font-weight: bold; background: #e0e0e0; padding: 6px 12px; border-radius: 8px; border: 1px solid #ccc; display: flex; align-items: center; gap: 5px;">👀 צפיות: <span id="v_' + id + '">1</span></div>';
             linksHtml += '\n        <script>' +
                          '\n            (function() {' +
-                         '\n                var storageKey = "view_count_" + "' + id + '";' +
-                         '\n                var currentCount = localStorage.getItem(storageKey) || 0;' +
-                         '\n                currentCount = parseInt(currentCount) + 1;' +
-                         '\n                localStorage.setItem(storageKey, currentCount);' +
-                         '\n                document.getElementById("count_" + "' + id + '").innerText = currentCount;' +
+                         '\n                var k = "c_" + "' + id + '";' +
+                         '\n                var n = parseInt(localStorage.getItem(k) || 0) + 1;' +
+                         '\n                localStorage.setItem(k, n);' +
+                         '\n                document.getElementById("v_" + "' + id + '").innerText = n;' +
                          '\n            })();' +
                          '\n        <\/script>';
 
@@ -86,4 +86,27 @@
     '\n        <div style="background: #1e1e1e; color: #32CD32; padding: 10px; border-radius: 5px; font-family: monospace; direction: ltr; text-align: left;">' + style + '</div>' +
     '\n    </div>' +
     '\n    <div style="padding: 15px; background: #fafafa; border-top: 1px solid #eee;">' +
-    '\n        <div style="font-size
+    '\n        <div style="font-size: 11px; color: #888; font-weight: bold;">LYRICS:</div>' +
+    '\n        <div style="font-size: 16px; line-height: 1.6; color: #333; white-space: pre-wrap;">' + lyrics + '</div>' +
+    '\n    </div>' + linksHtml +
+    '\n    <div style="padding: 5px; background: #f1f1f1; text-align: center; font-size: 10px; color: #bbb;">prompts-il.blogspot.com</div>' +
+    '\n</div>';
+
+            document.getElementById('res').innerText = code;
+            document.getElementById('res').style.display = 'block';
+            document.getElementById('copyBtn').style.display = 'block';
+        }
+
+        function copy() {
+            var text = document.getElementById('res').innerText;
+            var dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            dummy.value = text;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+            alert("הקוד הועתק!");
+        }
+    </script>
+</body>
+</html>
