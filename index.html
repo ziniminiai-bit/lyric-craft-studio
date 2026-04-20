@@ -19,8 +19,8 @@
         <input type="text" id="sty" placeholder="סגנון מוזיקלי">
         <textarea id="lyr" rows="5" placeholder="מילות השיר או מבנה השיר"></textarea>
         
-        <input type="text" id="btnTxt" placeholder="טקסט לכפתור (למשל: צפו ביוטיוב)">
-        <input type="text" id="btnLnk" placeholder="כתובת הקישור (URL)">
+        <p style="font-size: 12px; color: #888; margin: 5px 0;">הוסף קישורים (פורמט: טקסט|קישור). כל קישור בשורה חדשה.</p>
+        <textarea id="linksArea" rows="3" placeholder="למשל:&#10;צפייה ביוטיוב|https://youtube.com/...&#10;הורדת השיר|https://download.com/..."></textarea>
 
         <button onclick="gen()">צור קוד לבלוג</button>
         <div id="res"></div>
@@ -32,19 +32,26 @@
             var id = document.getElementById('sid').value.trim();
             var style = document.getElementById('sty').value.trim();
             var lyrics = document.getElementById('lyr').value.trim();
-            var bText = document.getElementById('btnTxt').value.trim();
-            var bLink = document.getElementById('btnLnk').value.trim();
+            var linksText = document.getElementById('linksArea').value.trim();
             
             if(!id) {
                 alert("נא להזין ID");
                 return;
             }
             
-            var linkHtml = '';
-            if(bText && bLink) {
-                linkHtml = '\n    <div style="padding: 15px; text-align: center; background: #f9f9f9; border-top: 1px solid #eee;">' +
-                           '\n        <a href="' + bLink + '" target="_blank" style="display: inline-block; padding: 10px 20px; background: #111; color: #00d4ff; text-decoration: none; border-radius: 25px; font-weight: bold; font-size: 14px; border: 1px solid #00d4ff;">' + bText + '</a>' +
-                           '\n    </div>';
+            var linksHtml = '';
+            if(linksText) {
+                var lines = linksText.split('\n');
+                linksHtml = '\n    <div style="padding: 15px; text-align: center; background: #f9f9f9; border-top: 1px solid #eee; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">';
+                for(var i = 0; i < lines.length; i++) {
+                    var parts = lines[i].split('|');
+                    if(parts.length === 2) {
+                        var t = parts[0].trim();
+                        var l = parts[1].trim();
+                        linksHtml += '\n        <a href="' + l + '" target="_blank" style="display: inline-block; padding: 10px 20px; background: #111; color: #00d4ff; text-decoration: none; border-radius: 25px; font-weight: bold; font-size: 14px; border: 1px solid #00d4ff;">' + t + '</a>';
+                    }
+                }
+                linksHtml += '\n    </div>';
             }
 
             var code = '<div style="direction: rtl; font-family: Arial, sans-serif; border: 2px solid #222; border-radius: 15px; overflow: hidden; max-width: 100%; margin: 20px auto; background: #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.2);">' +
@@ -59,7 +66,7 @@
     '\n    <div style="padding: 15px; background: #fafafa; border-top: 1px solid #eee;">' +
     '\n        <div style="font-size: 11px; color: #888; font-weight: bold;">LYRICS:</div>' +
     '\n        <div style="font-size: 16px; line-height: 1.6; color: #333; white-space: pre-wrap;">' + lyrics + '</div>' +
-    '\n    </div>' + linkHtml +
+    '\n    </div>' + linksHtml +
     '\n    <div style="padding: 5px; background: #f1f1f1; text-align: center; font-size: 10px; color: #bbb;">prompts-il.blogspot.com</div>' +
     '\n</div>';
 
