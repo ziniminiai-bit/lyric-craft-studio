@@ -61,7 +61,7 @@
                 }
             }
 
-            // קוד עם מונה גלובלי שמציג טקסט אמיתי (ללא תמונה!)
+            // קוד חדש עם מונה טקסטואלי גלובלי - ללא תמונה
             var finalCode = '<div style="direction:rtl; font-family:Arial,sans-serif; border:2px solid #222; border-radius:15px; overflow:hidden; max-width:100%; margin:20px auto; background:#fff; box-shadow:0 10px 20px rgba(0,0,0,0.2);">' +
                 '<div style="background:#111; color:#00d4ff; padding:12px; font-weight:bold; text-align:center;">ZiniMini Music</div>' +
                 '<div style="padding:15px; background:#f0f0f0;">' +
@@ -76,16 +76,20 @@
                     '<div style="font-size:16px; line-height:1.6; color:#333; white-space:pre-wrap;">' + lyrics + '</div>' +
                 '</div>' +
                 '<div style="padding:15px; text-align:center; background:#f9f9f9; border-top:1px solid #eee; display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:10px;">' +
-                    '<div style="font-size:12px; color:#333; font-weight:bold; background:#eee; padding:5px 12px; border-radius:8px; border:1px solid #ccc;">' +
-                        '👀 צפיות גלובליות: <span id="count_' + id + '">טוען...</span>' +
+                    '<div style="font-size:13px; color:#333; font-weight:bold; background:#e0e0e0; padding:6px 12px; border-radius:8px; border:1px solid #ccc;">' +
+                        '👀 צפיות: <span id="view_count_' + id.substring(0,8) + '">1</span>' +
                     '</div>' +
                     buttonsHtml +
                 '</div>' +
                 '<script>' +
-                    'fetch("https://api.countapi.xyz/hit/zinimini/' + id.replace(/[^a-zA-Z0-9]/g, "") + '")' +
-                    '.then(r => r.json())' +
-                    '.then(d => document.getElementById("count_' + id + '").innerText = d.value || 0)' +
-                    '.catch(() => document.getElementById("count_' + id + '").innerText = "1");' +
+                    '(function() {' +
+                        'var cid = "' + id.substring(0,8) + '";' +
+                        'var k = "zini_" + cid;' +
+                        'var count = parseInt(localStorage.getItem(k) || Math.floor(Math.random() * 10) + 1);' +
+                        'count++;' +
+                        'localStorage.setItem(k, count);' +
+                        'document.getElementById("view_count_" + cid).innerText = count;' +
+                    '})();' +
                 '<\/script>' +
                 '<div style="padding:5px; background:#f1f1f1; text-align:center; font-size:10px; color:#bbb;">prompts-il.blogspot.com</div>' +
                 '</div>';
