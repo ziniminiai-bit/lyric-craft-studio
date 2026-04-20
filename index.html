@@ -19,10 +19,8 @@
         <input type="text" id="sty" placeholder="סגנון מוזיקלי">
         <textarea id="lyr" rows="5" placeholder="מילות השיר או מבנה השיר"></textarea>
         
-        <div style="display: flex; gap: 10px;">
-            <input type="text" id="btnTxt" placeholder="טקסט לכפתור (למשל: צפו ביוטיוב)">
-            <input type="text" id="btnLnk" placeholder="כתובת הקישור (URL)">
-        </div>
+        <input type="text" id="btnTxt" placeholder="טקסט לכפתור (למשל: צפו ביוטיוב)">
+        <input type="text" id="btnLnk" placeholder="כתובת הקישור (URL)">
 
         <button onclick="gen()">צור קוד לבלוג</button>
         <div id="res"></div>
@@ -37,7 +35,10 @@
             var bText = document.getElementById('btnTxt').value.trim();
             var bLink = document.getElementById('btnLnk').value.trim();
             
-            if(!id) return alert("נא להזין ID");
+            if(!id) {
+                alert("נא להזין ID");
+                return;
+            }
             
             var linkHtml = '';
             if(bText && bLink) {
@@ -71,4 +72,12 @@
             var text = document.getElementById('res').innerText;
             var dummy = document.createElement("textarea");
             document.body.appendChild(dummy);
-            dummy.
+            dummy.value = text;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+            alert("הקוד הועתק!");
+        }
+    </script>
+</body>
+</html>
