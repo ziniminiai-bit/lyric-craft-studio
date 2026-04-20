@@ -56,11 +56,10 @@
             var txtInputs = document.getElementsByClassName('btnTxt');
             var lnkInputs = document.getElementsByClassName('btnLnk');
             
-            // בניית שורת הכפתורים עם המונה
             var linksHtml = '\n    <div style="padding: 15px; text-align: center; background: #f9f9f9; border-top: 1px solid #eee; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 15px;">';
             
-            // המונה (Counter) - תיקון השרשור
-            linksHtml += '\n        <div style="font-size: 12px; color: #666; font-weight: bold; background: #eee; padding: 5px 10px; border-radius: 5px; display: flex; align-items: center; gap: 5px;">👀 צפיות: <img src="https://www.free-website-hit-counter.com/c.php?d=9&id=' + id + '&s=1" border="0" alt="counter" style="height: 16px;"></div>';
+            // תיקון המונה - שימוש ב-ID כדי לייצר מונה ייחודי לכל שיר
+            linksHtml += '\n        <div style="font-size: 12px; color: #666; font-weight: bold; background: #eee; padding: 5px 10px; border-radius: 5px; display: flex; align-items: center; gap: 5px;">👀 צפיות: <img src="https://hitwebcounter.com/counter/counter.php?page=' + id + '&style=0006&nbdigits=4&type=page&initCount=0" title="Free Counter" Alt="web counter" border="0" style="height: 16px;"></div>';
 
             for (var i = 0; i < txtInputs.length; i++) {
                 var t = txtInputs[i].value.trim();
@@ -95,4 +94,13 @@
         function copy() {
             var text = document.getElementById('res').innerText;
             var dummy = document.createElement("textarea");
-            document.
+            document.body.appendChild(dummy);
+            dummy.value = text;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+            alert("הקוד הועתק!");
+        }
+    </script>
+</body>
+</html>
