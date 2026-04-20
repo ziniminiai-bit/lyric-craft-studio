@@ -18,7 +18,7 @@
         <input type="text" id="sid" placeholder="הדבק כאן את ה-ID">
         <input type="text" id="sty" placeholder="סגנון מוזיקלי">
         <textarea id="lyr" rows="5" placeholder="מילות השיר או מבנה השיר"></textarea>
-        <input type="text" id="lnk" placeholder="קישור נוסף (אופציונלי - למשל ליוטיוב או הורדה)">
+        <input type="text" id="links" placeholder="קישורים (למשל: יוטיוב, הורדה) - הפרד בפסיק">
         <button onclick="gen()">צור קוד לבלוג</button>
         <div id="res"></div>
         <button id="copyBtn" style="display:none; background:#32CD32" onclick="copy()">העתק קוד</button>
@@ -29,14 +29,22 @@
             var id = document.getElementById('sid').value.trim();
             var style = document.getElementById('sty').value.trim();
             var lyrics = document.getElementById('lyr').value.trim();
-            var link = document.getElementById('lnk').value.trim();
+            var linksInput = document.getElementById('links').value.trim();
+            
             if(!id) return alert("נא להזין ID");
             
-            var linkHtml = '';
-            if(link) {
-                linkHtml = '\n    <div style="padding: 10px; text-align: center; background: #f9f9f9; border-top: 1px solid #eee;">' +
-                           '\n        <a href="' + link + '" target="_blank" style="display: inline-block; padding: 8px 15px; background: #00d4ff; color: #000; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 14px;">לצפייה/הורדה בקישור חיצוני</a>' +
-                           '\n    </div>';
+            // עיבוד הקישורים לכפתורים
+            var linksHtml = '';
+            if(linksInput) {
+                var linksArray = linksInput.split(',');
+                linksHtml += '\n    <div style="padding: 15px; text-align: center; background: #f9f9f9; border-top: 1px solid #eee; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">';
+                for(var i=0; i < linksArray.length; i++) {
+                    var linkUrl = linksArray[i].trim();
+                    if(linkUrl) {
+                        linksHtml += '\n        <a href="' + linkUrl + '" target="_blank" style="display: inline-block; padding: 8px 18px; background: #111; color: #00d4ff; text-decoration: none; border-radius: 25px; font-weight: bold; font-size: 13px; border: 1px solid #00d4ff;">קישור חיצוני ' + (i+1) + '</a>';
+                    }
+                }
+                linksHtml += '\n    </div>';
             }
 
             var code = '<div style="direction: rtl; font-family: Arial, sans-serif; border: 2px solid #222; border-radius: 15px; overflow: hidden; max-width: 100%; margin: 20px auto; background: #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.2);">' +
@@ -51,24 +59,5 @@
     '\n    <div style="padding: 15px; background: #fafafa; border-top: 1px solid #eee;">' +
     '\n        <div style="font-size: 11px; color: #888; font-weight: bold;">LYRICS:</div>' +
     '\n        <div style="font-size: 16px; line-height: 1.6; color: #333; white-space: pre-wrap;">' + lyrics + '</div>' +
-    '\n    </div>' + linkHtml +
-    '\n    <div style="padding: 5px; background: #f1f1f1; text-align: center; font-size: 10px; color: #bbb;">prompts-il.blogspot.com</div>' +
-    '\n</div>';
-
-            document.getElementById('res').innerText = code;
-            document.getElementById('res').style.display = 'block';
-            document.getElementById('copyBtn').style.display = 'block';
-        }
-        function copy() {
-            var text = document.getElementById('res').innerText;
-            var dummy = document.createElement("textarea");
-            document.body.appendChild(dummy);
-            dummy.value = text;
-            dummy.select();
-            document.execCommand("copy");
-            document.body.removeChild(dummy);
-            alert("הקוד הועתק!");
-        }
-    </script>
-</body>
-</html>
+    '\n    </div>' + linksHtml +
+    '\n    <div style="padding: 5px; background: #f1f1f1; text-align: center; font-size
