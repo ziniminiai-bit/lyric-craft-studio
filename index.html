@@ -29,7 +29,7 @@
         </div>
         <button type="button" class="add-btn" onclick="addLinkField()">➕ הוסף קישור נוסף</button>
 
-        <button onclick="gen()">צור קוד לבלוג</button>
+        <button type="button" onclick="gen()">צור קוד לבלוג</button>
         <div id="res"></div>
         <button id="copyBtn" style="display:none; background:#32CD32" onclick="copy()">העתק קוד</button>
     </div>
@@ -39,68 +39,4 @@
             var container = document.getElementById('linksContainer');
             var div = document.createElement('div');
             div.className = 'link-row';
-            div.innerHTML = '<input type="text" class="btnTxt" placeholder="טקסט כפתור"> <input type="text" class="btnLnk" placeholder="כתובת קישור">';
-            container.appendChild(div);
-        }
-
-        function gen() {
-            var id = document.getElementById('sid').value.trim();
-            var style = document.getElementById('sty').value.trim();
-            var lyrics = document.getElementById('lyr').value.trim();
-            
-            if(!id) { alert("נא להזין ID"); return; }
-            
-            var txtInputs = document.getElementsByClassName('btnTxt');
-            var lnkInputs = document.getElementsByClassName('btnLnk');
-            var linksHtml = '';
-            var hasLinks = false;
-
-            // בניית שורת הכפתורים עם המונה
-            linksHtml = '\n    <div style="padding: 15px; text-align: center; background: #f9f9f9; border-top: 1px solid #eee; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 15px;">';
-            
-            // המונה (Counter)
-            linksHtml += '\n        <div style="font-size: 12px; color: #666; font-weight: bold; background: #eee; padding: 5px 10px; border-radius: 5px;">👀 צפיות: <img src="https://counter.secretheel.com/get/count?id=' + id + '&style=1" alt="counter" style="vertical-align: middle; height: 14px;"></div>';
-
-            for (var i = 0; i < txtInputs.length; i++) {
-                var t = txtInputs[i].value.trim();
-                var l = lnkInputs[i].value.trim();
-                if(t && l) {
-                    linksHtml += '\n        <a href="' + l + '" target="_blank" style="display: inline-block; padding: 8px 18px; background: #111; color: #00d4ff; text-decoration: none; border-radius: 25px; font-weight: bold; font-size: 13px; border: 1px solid #00d4ff;">' + t + '</a>';
-                }
-            }
-            linksHtml += '\n    </div>';
-
-            var code = '<div style="direction: rtl; font-family: Arial, sans-serif; border: 2px solid #222; border-radius: 15px; overflow: hidden; max-width: 100%; margin: 20px auto; background: #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.2);">' +
-    '\n    <div style="background: #111; color: #00d4ff; padding: 12px; font-weight: bold; text-align: center;">ZiniMini Music</div>' +
-    '\n    <div style="padding: 15px; background: #f0f0f0;">' +
-    '\n        <iframe src="https://suno.com/embed/' + id + '" width="100%" height="150" style="border:none; border-radius: 10px; background: white;" allowfullscreen></iframe>' +
-    '\n    </div>' +
-    '\n    <div style="padding: 15px;">' +
-    '\n        <div style="font-size: 11px; color: #888; font-weight: bold;">STYLE:</div>' +
-    '\n        <div style="background: #1e1e1e; color: #32CD32; padding: 10px; border-radius: 5px; font-family: monospace; direction: ltr; text-align: left;">' + style + '</div>' +
-    '\n    </div>' +
-    '\n    <div style="padding: 15px; background: #fafafa; border-top: 1px solid #eee;">' +
-    '\n        <div style="font-size: 11px; color: #888; font-weight: bold;">LYRICS:</div>' +
-    '\n        <div style="font-size: 16px; line-height: 1.6; color: #333; white-space: pre-wrap;">' + lyrics + '</div>' +
-    '\n    </div>' + linksHtml +
-    '\n    <div style="padding: 5px; background: #f1f1f1; text-align: center; font-size: 10px; color: #bbb;">prompts-il.blogspot.com</div>' +
-    '\n</div>';
-
-            document.getElementById('res').innerText = code;
-            document.getElementById('res').style.display = 'block';
-            document.getElementById('copyBtn').style.display = 'block';
-        }
-
-        function copy() {
-            var text = document.getElementById('res').innerText;
-            var dummy = document.createElement("textarea");
-            document.body.appendChild(dummy);
-            dummy.value = text;
-            dummy.select();
-            document.execCommand("copy");
-            document.body.removeChild(dummy);
-            alert("הקוד הועתק!");
-        }
-    </script>
-</body>
-</html>
+            div
