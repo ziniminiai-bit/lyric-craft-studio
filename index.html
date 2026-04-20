@@ -8,7 +8,9 @@
         .box { max-width: 600px; margin: auto; background: #1a1a1a; padding: 30px; border-radius: 20px; border: 1px solid #00d4ff; box-shadow: 0 0 15px rgba(0,212,255,0.3); }
         input, textarea { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: none; background: #2a2a2a; color: white; font-size: 16px; box-sizing: border-box; }
         button { background: #00d4ff; color: #000; border: none; padding: 15px 30px; border-radius: 10px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
+        .link-row { display: flex; gap: 10px; margin-bottom: 5px; }
         #res { display: none; margin-top: 20px; background: #222; padding: 15px; border-radius: 10px; text-align: left; direction: ltr; font-family: monospace; font-size: 12px; overflow-x: auto; border: 1px dashed #555; white-space: pre-wrap; color: #00ff00; }
+        .add-btn { background: #333; color: #00d4ff; padding: 5px; font-size: 13px; border: 1px solid #00d4ff; width: auto; margin-bottom: 15px; }
     </style>
 </head>
 <body>
@@ -19,8 +21,13 @@
         <input type="text" id="sty" placeholder="סגנון מוזיקלי">
         <textarea id="lyr" rows="5" placeholder="מילות השיר או מבנה השיר"></textarea>
         
-        <p style="font-size: 12px; color: #888; margin: 5px 0;">הוסף קישורים (פורמט: טקסט|קישור). כל קישור בשורה חדשה.</p>
-        <textarea id="linksArea" rows="3" placeholder="למשל:&#10;צפייה ביוטיוב|https://youtube.com/...&#10;הורדת השיר|https://download.com/..."></textarea>
+        <div id="linksContainer">
+            <div class="link-row">
+                <input type="text" class="btnTxt" placeholder="טקסט כפתור (למשל: יוטיוב)">
+                <input type="text" class="btnLnk" placeholder="כתובת קישור (URL)">
+            </div>
+        </div>
+        <button type="button" class="add-btn" onclick="addLinkField()">➕ הוסף קישור נוסף</button>
 
         <button onclick="gen()">צור קוד לבלוג</button>
         <div id="res"></div>
@@ -28,31 +35,38 @@
     </div>
 
     <script>
+        function addLinkField() {
+            var container = document.getElementById('linksContainer');
+            var div = document.createElement('div');
+            div.className = 'link-row';
+            div.innerHTML = '<input type="text" class="btnTxt" placeholder="טקסט כפתור"> <input type="text" class="btnLnk" placeholder="כתובת קישור">';
+            container.appendChild(div);
+        }
+
         function gen() {
             var id = document.getElementById('sid').value.trim();
             var style = document.getElementById('sty').value.trim();
             var lyrics = document.getElementById('lyr').value.trim();
-            var linksText = document.getElementById('linksArea').value.trim();
             
-            if(!id) {
-                alert("נא להזין ID");
-                return;
-            }
+            if(!id) { alert("נא להזין ID"); return; }
             
+            var txtInputs = document.getElementsByClassName('btnTxt');
+            var lnkInputs = document.getElementsByClassName('btnLnk');
             var linksHtml = '';
-            if(linksText) {
-                var lines = linksText.split('\n');
-                linksHtml = '\n    <div style="padding: 15px; text-align: center; background: #f9f9f9; border-top: 1px solid #eee; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">';
-                for(var i = 0; i < lines.length; i++) {
-                    var parts = lines[i].split('|');
-                    if(parts.length === 2) {
-                        var t = parts[0].trim();
-                        var l = parts[1].trim();
-                        linksHtml += '\n        <a href="' + l + '" target="_blank" style="display: inline-block; padding: 10px 20px; background: #111; color: #00d4ff; text-decoration: none; border-radius: 25px; font-weight: bold; font-size: 14px; border: 1px solid #00d4ff;">' + t + '</a>';
+            var hasLinks = false;
+
+            for (var i = 0; i < txtInputs.length; i++) {
+                var t = txtInputs[i].value.trim();
+                var l = lnkInputs[i].value.trim();
+                if(t && l) {
+                    if(!hasLinks) {
+                        linksHtml = '\n    <div style="padding: 15px; text-align: center; background: #f9f9f9; border-top: 1px solid #eee; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">';
+                        hasLinks = true;
                     }
+                    linksHtml += '\n        <a href="' + l + '" target="_blank" style="display: inline-block; padding: 10px 20px; background: #111; color: #00d4ff; text-decoration: none; border-radius: 25px; font-weight: bold; font-size: 14px; border: 1px solid #00d4ff;">' + t + '</a>';
                 }
-                linksHtml += '\n    </div>';
             }
+            if(hasLinks) linksHtml += '\n    </div>';
 
             var code = '<div style="direction: rtl; font-family: Arial, sans-serif; border: 2px solid #222; border-radius: 15px; overflow: hidden; max-width: 100%; margin: 20px auto; background: #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.2);">' +
     '\n    <div style="background: #111; color: #00d4ff; padding: 12px; font-weight: bold; text-align: center;">ZiniMini Music</div>' +
@@ -67,24 +81,4 @@
     '\n        <div style="font-size: 11px; color: #888; font-weight: bold;">LYRICS:</div>' +
     '\n        <div style="font-size: 16px; line-height: 1.6; color: #333; white-space: pre-wrap;">' + lyrics + '</div>' +
     '\n    </div>' + linksHtml +
-    '\n    <div style="padding: 5px; background: #f1f1f1; text-align: center; font-size: 10px; color: #bbb;">prompts-il.blogspot.com</div>' +
-    '\n</div>';
-
-            document.getElementById('res').innerText = code;
-            document.getElementById('res').style.display = 'block';
-            document.getElementById('copyBtn').style.display = 'block';
-        }
-
-        function copy() {
-            var text = document.getElementById('res').innerText;
-            var dummy = document.createElement("textarea");
-            document.body.appendChild(dummy);
-            dummy.value = text;
-            dummy.select();
-            document.execCommand("copy");
-            document.body.removeChild(dummy);
-            alert("הקוד הועתק!");
-        }
-    </script>
-</body>
-</html>
+    '\n    <div style="padding: 5px; background: #f1f1f1; text-align: center; font-size:
