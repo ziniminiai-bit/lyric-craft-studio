@@ -23,13 +23,13 @@
         
         <div id="linksContainer">
             <div class="link-row">
-                <input type="text" class="btnTxt" placeholder="טקסט כפתור (למשל: יוטיוב)">
+                <input type="text" class="btnTxt" placeholder="טקסט כפתור">
                 <input type="text" class="btnLnk" placeholder="כתובת קישור (URL)">
             </div>
         </div>
         <button type="button" class="add-btn" onclick="addLinkField()">➕ הוסף קישור נוסף</button>
-
         <button type="button" onclick="gen()">צור קוד לבלוג</button>
+        
         <div id="res"></div>
         <button id="copyBtn" style="display:none; background:#32CD32" onclick="copy()">העתק קוד</button>
     </div>
@@ -47,52 +47,42 @@
             var id = document.getElementById('sid').value.trim();
             var style = document.getElementById('sty').value.trim();
             var lyrics = document.getElementById('lyr').value.trim();
-            
             if(!id) { alert("נא להזין ID"); return; }
             
-            var txtInputs = document.getElementsByClassName('btnTxt');
-            var lnkInputs = document.getElementsByClassName('btnLnk');
-            
-            // בניית שורת המונה והכפתורים
-            var linksHtml = '\n    <div style="padding: 15px; text-align: center; background: #f9f9f9; border-top: 1px solid #eee; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 15px;">';
-            
-            // מונה טקסטואלי חכם שלא נשבר לעולם
-            linksHtml += '\n        <div style="font-size: 13px; color: #333; font-weight: bold; background: #e0e0e0; padding: 6px 12px; border-radius: 8px; border: 1px solid #ccc; display: flex; align-items: center; gap: 5px;">👀 צפיות: <span id="v_' + id + '">1</span></div>';
-            linksHtml += '\n        <script>' +
-                         '\n            (function() {' +
-                         '\n                var k = "c_" + "' + id + '";' +
-                         '\n                var n = parseInt(localStorage.getItem(k) || 0) + 1;' +
-                         '\n                localStorage.setItem(k, n);' +
-                         '\n                document.getElementById("v_" + "' + id + '").innerText = n;' +
-                         '\n            })();' +
-                         '\n        <\/script>';
+            var txtIn = document.getElementsByClassName('btnTxt');
+            var lnkIn = document.getElementsByClassName('btnLnk');
+            var buttonsHtml = '';
 
-            for (var i = 0; i < txtInputs.length; i++) {
-                var t = txtInputs[i].value.trim();
-                var l = lnkInputs[i].value.trim();
+            for (var i = 0; i < txtIn.length; i++) {
+                var t = txtIn[i].value.trim();
+                var l = lnkIn[i].value.trim();
                 if(t && l) {
-                    linksHtml += '\n        <a href="' + l + '" target="_blank" style="display: inline-block; padding: 8px 18px; background: #111; color: #00d4ff; text-decoration: none; border-radius: 25px; font-weight: bold; font-size: 13px; border: 1px solid #00d4ff;">' + t + '</a>';
+                    buttonsHtml += '<a href="' + l + '" target="_blank" style="display:inline-block; padding:8px 18px; background:#111; color:#00d4ff; text-decoration:none; border-radius:25px; font-weight:bold; font-size:13px; border:1px solid #00d4ff; margin:5px;">' + t + '</a>';
                 }
             }
-            linksHtml += '\n    </div>';
 
-            var code = '<div style="direction: rtl; font-family: Arial, sans-serif; border: 2px solid #222; border-radius: 15px; overflow: hidden; max-width: 100%; margin: 20px auto; background: #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.2);">' +
-    '\n    <div style="background: #111; color: #00d4ff; padding: 12px; font-weight: bold; text-align: center;">ZiniMini Music</div>' +
-    '\n    <div style="padding: 15px; background: #f0f0f0;">' +
-    '\n        <iframe src="https://suno.com/embed/' + id + '" width="100%" height="150" style="border:none; border-radius: 10px; background: white;" allowfullscreen></iframe>' +
-    '\n    </div>' +
-    '\n    <div style="padding: 15px;">' +
-    '\n        <div style="font-size: 11px; color: #888; font-weight: bold;">STYLE:</div>' +
-    '\n        <div style="background: #1e1e1e; color: #32CD32; padding: 10px; border-radius: 5px; font-family: monospace; direction: ltr; text-align: left;">' + style + '</div>' +
-    '\n    </div>' +
-    '\n    <div style="padding: 15px; background: #fafafa; border-top: 1px solid #eee;">' +
-    '\n        <div style="font-size: 11px; color: #888; font-weight: bold;">LYRICS:</div>' +
-    '\n        <div style="font-size: 16px; line-height: 1.6; color: #333; white-space: pre-wrap;">' + lyrics + '</div>' +
-    '\n    </div>' + linksHtml +
-    '\n    <div style="padding: 5px; background: #f1f1f1; text-align: center; font-size: 10px; color: #bbb;">prompts-il.blogspot.com</div>' +
-    '\n</div>';
+            // יצירת הקוד הסופי להעתקה עם המונה היציב
+            var finalCode = '<div style="direction:rtl; font-family:Arial,sans-serif; border:2px solid #222; border-radius:15px; overflow:hidden; max-width:100%; margin:20px auto; background:#fff; box-shadow:0 10px 20px rgba(0,0,0,0.2);">' +
+                '<div style="background:#111; color:#00d4ff; padding:12px; font-weight:bold; text-align:center;">ZiniMini Music</div>' +
+                '<div style="padding:15px; background:#f0f0f0;">' +
+                    '<iframe src="https://suno.com/embed/' + id + '" width="100%" height="150" style="border:none; border-radius:10px; background:white;" allowfullscreen></iframe>' +
+                '</div>' +
+                '<div style="padding:15px;">' +
+                    '<div style="font-size:11px; color:#888; font-weight:bold;">STYLE:</div>' +
+                    '<div style="background:#1e1e1e; color:#32CD32; padding:10px; border-radius:5px; font-family:monospace; direction:ltr; text-align:left;">' + style + '</div>' +
+                '</div>' +
+                '<div style="padding:15px; background:#fafafa; border-top:1px solid #eee;">' +
+                    '<div style="font-size:11px; color:#888; font-weight:bold;">LYRICS:</div>' +
+                    '<div style="font-size:16px; line-height:1.6; color:#333; white-space:pre-wrap;">' + lyrics + '</div>' +
+                '</div>' +
+                '<div style="padding:15px; text-align:center; background:#f9f9f9; border-top:1px solid #eee; display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:10px;">' +
+                    '<div style="font-size:13px; color:#333; font-weight:bold; background:#e0e0e0; padding:6px 12px; border-radius:8px; border:1px solid #ccc;">👀 צפיות: <img src="https://www.cutercounter.com/hits.php?id=gvuoapnf&nd=4&style=1" border="0" style="vertical-align:middle; height:18px;"></div>' +
+                    buttonsHtml +
+                '</div>' +
+                '<div style="padding:5px; background:#f1f1f1; text-align:center; font-size:10px; color:#bbb;">prompts-il.blogspot.com</div>' +
+                '</div>';
 
-            document.getElementById('res').innerText = code;
+            document.getElementById('res').innerText = finalCode;
             document.getElementById('res').style.display = 'block';
             document.getElementById('copyBtn').style.display = 'block';
         }
