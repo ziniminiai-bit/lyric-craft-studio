@@ -29,7 +29,7 @@
         </div>
         <button type="button" class="add-btn" onclick="addLinkField()">➕ הוסף קישור נוסף</button>
 
-        <button type="button" id="mainGenBtn" onclick="gen()">צור קוד לבלוג</button>
+        <button type="button" onclick="gen()">צור קוד לבלוג</button>
         <div id="res"></div>
         <button id="copyBtn" style="display:none; background:#32CD32" onclick="copy()">העתק קוד</button>
     </div>
@@ -56,10 +56,11 @@
             var txtInputs = document.getElementsByClassName('btnTxt');
             var lnkInputs = document.getElementsByClassName('btnLnk');
             
+            // בניית שורת הכפתורים עם המונה המתוקן
             var linksHtml = '\n    <div style="padding: 15px; text-align: center; background: #f9f9f9; border-top: 1px solid #eee; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 15px;">';
             
-            // תיקון המונה - שימוש ב-ID כדי לייצר מונה ייחודי לכל שיר
-            linksHtml += '\n        <div style="font-size: 12px; color: #666; font-weight: bold; background: #eee; padding: 5px 10px; border-radius: 5px; display: flex; align-items: center; gap: 5px;">👀 צפיות: <img src="https://hitwebcounter.com/counter/counter.php?page=' + id + '&style=0006&nbdigits=4&type=page&initCount=0" title="Free Counter" Alt="web counter" border="0" style="height: 16px;"></div>';
+            // מונה כניסות יציב (שימוש ב-ID של Suno כחלק מהנתיב)
+            linksHtml += '\n        <div style="font-size: 12px; color: #666; font-weight: bold; background: #eee; padding: 5px 10px; border-radius: 5px; display: flex; align-items: center; gap: 5px;">👀 צפיות: <img src="https://hitwebcounter.com/counter/counter.php?page=ZiniMini_' + id + '&style=0006&nbdigits=4&type=page&initCount=0" border="0" style="height: 16px;"></div>';
 
             for (var i = 0; i < txtInputs.length; i++) {
                 var t = txtInputs[i].value.trim();
